@@ -1,0 +1,42 @@
+page-device {
+
+    #systemState{
+
+        font-size:25px;
+        margin-top: 12%;
+        margin-left: 5%;
+        font-weight:bold;
+
+    }
+
+    #desligarButton{
+        float:left;
+        width:40%;
+
+    }
+
+    #ligarButton{
+        float:right;
+        width:40%;
+    }
+
+    #ligarDesligarContainer{
+        margin:0 auto;
+        width:70%;
+        height:10%;
+    }
+
+    #pgmTitle{
+        font-weight:bold;
+    }
+
+    button{
+        background-color:  color($colors, primary);;
+    }
+
+    #configDevice{
+        zoom:1.5;
+        color:white;
+    }
+
+}

@@ -1,0 +1,28 @@
+page-home {
+
+    .optionConfig{
+        padding: 15px;  
+    }
+
+    .deviceName{
+        font-weight:bold; 
+    }
+
+    .devicesList{
+
+    }
+
+    .image{
+        float:left; 
+    }
+
+    #addButton{
+        zoom:1.5;
+        color:white;
+    }
+
+    button{
+        background-color:  color($colors, primary);;
+    }
+
+}

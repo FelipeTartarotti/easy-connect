@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{deviceName}}
+    </ion-title>
+    <ion-buttons end (click)="goToAutomationConfig()" >
+        <button>
+          <ion-icon id="configDevice" name="ios-options-outline" md="md-options"></ion-icon>
+        </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >
+
+  <ion-card >
+    <ion-card-content>
+      <ion-row >
+      
+        <ion-col col-4>
+          <img src={{img}} />
+        </ion-col>
+
+        <div id="systemState">{{systemState}}</div>
+
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <div id="ligarDesligarContainer">
+    <button  id="ligarButton" ion-button (click)="alarmOn()" [disabled]="alarmIsOn">Ligar</button>
+    <button id="desligarButton" ion-button (click)="alarmOff()" [disabled]="alarmIsOff">Desligar</button>
+  </div>
+  
+  <ion-card>
+    <ion-card-header>
+      <div id="pgmTitle">Automação</div>
+    </ion-card-header>
+  
+    <ion-list>
+      <button ion-item>
+        <ion-label>{{automation1_name}}</ion-label>
+        <ion-toggle></ion-toggle>
+      </button>
+  
+      <button ion-item>
+        <ion-label>{{automation2_name}}</ion-label>
+        <ion-toggle></ion-toggle>
+      </button>
+
+    </ion-list>
+  </ion-card>
+
+
+</ion-content>
