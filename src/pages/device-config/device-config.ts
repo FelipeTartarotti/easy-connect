@@ -29,8 +29,7 @@ export class DeviceConfigPage {
   automation2_time : string;
   name : string;
   cloudId : string;
-
-
+ 
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 

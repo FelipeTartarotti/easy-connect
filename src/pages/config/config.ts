@@ -7,7 +7,11 @@ import { NavController } from 'ionic-angular';
 })
 export class ConfigPage {
 
+  phoneId : string;
+
   constructor(public navCtrl: NavController) {
 
+    this.phoneId = JSON.parse(localStorage.getItem('phoneId'));
+    
   }
 }

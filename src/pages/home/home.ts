@@ -3,6 +3,7 @@ import {NavController } from 'ionic-angular';
 import {deviceModel } from '../../model/deviceModel';
 import {DevicePage} from '../device/device';
 import {AddDevicePage} from '../add-device/add-device';
+import uuidv4  from 'uuid/v1';
 
 
 @Component({
@@ -21,6 +22,12 @@ export class HomePage {
 
   ionViewDidEnter(){
     this.devices = JSON.parse(localStorage.getItem('devices'));
+    if(!localStorage.getItem('phoneId'))
+    {
+      var phoneId = uuidv4();
+      phoneId = phoneId.substring(0,18);
+      localStorage.setItem("phoneId", JSON.stringify(phoneId));
+    }
   }
 
 
