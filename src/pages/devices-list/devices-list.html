@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Easy-connect</ion-title>
+    
+    <ion-buttons end (click)='addDevice()'>
+        <button>
+          <ion-icon id="addButton" name="add-circle"></ion-icon>
+        </button>
+    </ion-buttons>
+    
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="devicesList" *ngFor="let device of devices">
+    <ion-card (click)='selectedDevice(device.deviceId,device.name)'>
+      <ion-icon class="optionConfig" style="float:right" name="volume-up"></ion-icon>
+      <ion-card-content>
+          <ion-icon name="home"></ion-icon>
+          <div class="deviceName">{{device.name}}</div>
+      </ion-card-content>
+    </ion-card>
+  </div> 
+</ion-content>

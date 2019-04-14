@@ -3,7 +3,9 @@ import {NavController } from 'ionic-angular';
 import {deviceModel } from '../../model/deviceModel';
 import {DevicePage} from '../device/device';
 import {AddDevicePage} from '../add-device/add-device';
+import {LoginPage} from '../login/login';
 import uuidv4  from 'uuid/v1';
+import {DevicesListPage} from '../devices-list/devices-list';
 
 
 @Component({
@@ -14,30 +16,25 @@ import uuidv4  from 'uuid/v1';
 
 export class HomePage {
 
-  devices;
+  logado;
 
   constructor(public navCtrl: NavController) {
 
+    
+
   }
 
-  ionViewDidEnter(){
-    this.devices = JSON.parse(localStorage.getItem('devices'));
-    if(!localStorage.getItem('phoneId'))
-    {
-      var phoneId = uuidv4();
-      phoneId = phoneId.substring(0,18);
-      localStorage.setItem("phoneId", JSON.stringify(phoneId));
+  ionViewWillEnter(){
+   
+    this.logado = JSON.parse(localStorage.getItem('logado'));
+    
+    if(this.logado=="yes"){
+      this.navCtrl.setRoot(DevicesListPage);
     }
-  }
-
-
-  selectedDevice(id,name){
-    this.navCtrl.push(DevicePage,{deviceName:name, deviceId:id});
-  }
-
-
-  addDevice(){
-    this.navCtrl.push(AddDevicePage);
+    else
+    {
+      this.navCtrl.setRoot(LoginPage);
+    }   
   }
 
 }
