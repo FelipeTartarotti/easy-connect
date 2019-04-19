@@ -17,9 +17,10 @@ import {DevicesListPage} from '../devices-list/devices-list';
 })
 export class LoginPage {
 
-  email;
-  password;
-  loader;
+  private email;
+  private password;
+  private loader;
+  private userId;
 
   constructor(public navCtrl: NavController, public navParams: 
     NavParams,private userProvider: UsersProvider,private toast: ToastController,
@@ -41,21 +42,21 @@ export class LoginPage {
         console.log(result);
         this.toast.create({ message: 'Usuário logado com sucesso', duration: 3000 }).present();
 
-        var phoneId = result.user._id;
-        localStorage.setItem("phoneId", JSON.stringify(phoneId));
+        this.userId = result.user._id;
+        localStorage.setItem("userId", JSON.stringify(this.userId));
         localStorage.setItem("token", JSON.stringify(result.token));
         localStorage.setItem("logado", JSON.stringify("yes"));
 
         this.navCtrl.push(DevicesListPage);
         
+        this.loader.dismiss();
         //this.navCtrl.pop();
         //this.navCtrl.setRoot()
       })
       .catch((error: any) => {
         this.toast.create({ message: 'Erro ao efetuar login. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
+        this.loader.dismiss();
       });
-
-      this.loader.dismiss();
   }
 
   ionViewDidLoad() {

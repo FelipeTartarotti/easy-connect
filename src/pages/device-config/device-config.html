@@ -27,7 +27,7 @@
         <ion-item-divider color="light">Dispositivo</ion-item-divider>
           <ion-item>
             <ion-label color="primary" floating>Nome dispositivo</ion-label>
-            <ion-input type="text" [(ngModel)]="name" value="">{{name}}</ion-input>
+            <ion-input type="text" [(ngModel)]="title" value="">{{title}}</ion-input>
           </ion-item>
         
           <ion-item>
@@ -41,12 +41,12 @@
 
         <ion-item>
           <ion-label color="primary" floating>Automação 1</ion-label>
-          <ion-input type="text" [(ngModel)]="automation1_name" value="">{{automation1_name}}</ion-input>
+          <ion-input type="text" [(ngModel)]="name_automation1" value="">{{name_automation1}}</ion-input>
         </ion-item>
       
         <ion-item>
           <ion-label color="primary" floating>Automação 2</ion-label>
-          <ion-input type="text" [(ngModel)]="automation2_name">{{automation2_name}}</ion-input>
+          <ion-input type="text" [(ngModel)]="name_automation2">{{name_automation2}}</ion-input>
         </ion-item>
       
       </ion-list>
@@ -57,12 +57,12 @@
 
         <ion-item>
           <ion-label color="primary" floating>Automação 1</ion-label>
-          <ion-input type="number" [(ngModel)]="automation1_time" max="60">{{automation1_time}}</ion-input>
+          <ion-input type="number" [(ngModel)]="time_automation1" max="60">{{time_automation1}}</ion-input>
         </ion-item>
       
         <ion-item>
           <ion-label color="primary" floating>Automação 2</ion-label>
-          <ion-input type="number" [(ngModel)]="automation2_time" max="60">{{automation2_time}}</ion-input>
+          <ion-input type="number" [(ngModel)]="time_automation2" max="60">{{time_automation2}}</ion-input>
         </ion-item>
 
       </ion-list>

@@ -7,30 +7,33 @@ import {DeviceConfigPage} from "../device-config/device-config";
   templateUrl: 'device.html'
 })
 export class DevicePage {
-  devices;
-  deviceName;
-  deviceId;
+  private project;
+  title;
+  _id;
   systemState = "Armado";
   img = "../../assets/imgs/house_green.png";
   alarmIsOn = true;
   alarmIsOff = false;
-  automation2_name = "empty";
-  automation1_name = "empty";
-  automation1_time;
-  automation2_time;
+  name_automation2 = "empty";
+  name_automation1 = "empty";
+  time_automation1;
+  time_automation2;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.deviceName = navParams.get("deviceName");
-    this.deviceId = navParams.get("deviceId");
-    this.devices = JSON.parse(localStorage.getItem('devices'));
+   
+    
+    this.title = navParams.get("title");
+    this._id = navParams.get("_id");
 
-    for(let data of this.devices) {
-      if(data.deviceId == this.deviceId){
-        this.automation1_name = data.automation1_name;
-        this.automation2_name = data.automation2_name;
-        this.automation1_time = data.automation1_time;
-        this.automation2_time = data.automation2_time;
-        console.log(this.automation1_name);
+    console.log(this.title,this._id);
+    this.project = JSON.parse(localStorage.getItem('project'));
+
+    for(let data of this.project.devices) {
+      if(data._id == this._id){
+        this.name_automation1 = data.name_automation1;
+        this.name_automation2 = data.name_automation2;
+        this.time_automation1 = data.time_automation1;
+        this.time_automation2 = data.time_automation2;
       }
     }
   }
@@ -58,6 +61,6 @@ export class DevicePage {
   }
 
   goToAutomationConfig(){
-    this.navCtrl.push(DeviceConfigPage,{deviceName: this.deviceName, deviceId: this.deviceId});
+    this.navCtrl.push(DeviceConfigPage,{title: this.title, _id: this._id});
   }
 }

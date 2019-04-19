@@ -1,9 +1,10 @@
 export interface deviceModel {
-    name : string;
+    title : string;
     cloudId : string;
-    deviceId: string;
-    automation1_name : string;
-    automation2_name : string;
-    automation1_time : string;
-    automation2_time : string;
+    _id: string;
+    name_automation1 : string;
+    name_automation2 : string;
+    time_automation1: string;
+    time_automation2 : string;
+    devicePassword : string;
 }

@@ -37,25 +37,21 @@ export class AddDevicePage {
 
   saveDevice(){
 
-    var deviceId = uuidv4();
+    /*var deviceId = uuidv4();
 
     if(!localStorage.getItem('devices'))
     {
-
       var firstDevice: deviceModel[] = [
         {name: this.device_name, cloudId: this.cloudId, deviceId: deviceId, automation1_name: "Automação 1", automation2_name: "Automação 2", automation1_time: "5", automation2_time: "5" }
       ];
-
       localStorage.setItem("devices", JSON.stringify(firstDevice));
-      
     }
     else
     {
       this.devices[this.devices.length] = {name: this.device_name, cloudId: this.cloudId, deviceId: deviceId, automation1_name: "Automação 1", automation2_name: "Automação 2", automation1_time: "5", automation2_time: "5" };
       localStorage.setItem("devices", JSON.stringify(this.devices));
     }
-
-     this.navCtrl.push(HomePage);
+     this.navCtrl.push(HomePage);*/
   }
 
   public scanQR() {

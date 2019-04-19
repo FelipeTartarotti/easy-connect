@@ -13,11 +13,11 @@
 
 <ion-content padding>
   <div class="devicesList" *ngFor="let device of devices">
-    <ion-card (click)='selectedDevice(device.deviceId,device.name)'>
+    <ion-card (click)='selectedDevice(device._id,device.title)'>
       <ion-icon class="optionConfig" style="float:right" name="volume-up"></ion-icon>
       <ion-card-content>
           <ion-icon name="home"></ion-icon>
-          <div class="deviceName">{{device.name}}</div>
+          <div class="deviceName">{{device.title}}</div>
       </ion-card-content>
     </ion-card>
   </div> 

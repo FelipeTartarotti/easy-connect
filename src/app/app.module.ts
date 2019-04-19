@@ -17,6 +17,7 @@ import { HttpModule } from '@angular/http'
 import { UsersProvider } from '../providers/users/users';
 import {DevicesListPage} from '../pages/devices-list/devices-list';
 import {AddDevicePage} from "../pages/add-device/add-device";
+import { DevicesProvider } from '../providers/devices/devices';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {AddDevicePage} from "../pages/add-device/add-device";
     Camera,
     BarcodeScanner,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    UsersProvider
+    UsersProvider,
+    DevicesProvider
   ]
 })
 export class AppModule {}
