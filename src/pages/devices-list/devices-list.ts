@@ -47,9 +47,12 @@ export class DevicesListPage {
 
     await this.devicesProvider.loadDevices(this.userId, this.token )
       .then((result: any) => {
+
         this.devices = result.project.devices;
+
         localStorage.setItem("projectId", JSON.stringify(this.devices[0].project));
         localStorage.setItem("project", JSON.stringify(result.project));
+        
         this.loader.dismiss();
       })
       .catch((error: any) => {

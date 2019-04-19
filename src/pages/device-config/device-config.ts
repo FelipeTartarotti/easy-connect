@@ -67,7 +67,6 @@ export class DeviceConfigPage {
     var index = 0;
     var data;
     for(data of this.project.devices) {
-      
       if(data._id == this._id){
         this.project.devices[index].title = this.title;
         this.project.devices[index].cloudId = this.cloudId;
@@ -76,24 +75,20 @@ export class DeviceConfigPage {
         this.project.devices[index].time_automation1 = this.time_automation1;
         this.project.devices[index].time_automation2 = this.time_automation2;
       }
-
       index++;
     }
+    
     localStorage.setItem("project", JSON.stringify(this.project));
     this.upadateDevices();
   }
-
   presentLoading() {
     this.loader = this.loadingCtrl.create({
       content: "Atualizando...",
     });
     this.loader.present();
   }
-
   async upadateDevices() {
-    
     this.presentLoading();
-    
     await this.devicesProvider.updateDevices(this.userId, this.token, this.projectId, this.project)
       .then((result: any) => {
         console.log(result);
@@ -105,5 +100,4 @@ export class DeviceConfigPage {
       });
     this.navCtrl.setRoot(HomePage);
   }
-  
 }

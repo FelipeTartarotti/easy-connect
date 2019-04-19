@@ -46,7 +46,6 @@ export class DevicesProvider {
 
     let options = new RequestOptions({ headers: headers });
 
-    console.log("provider ->",devices);
     return new Promise((resolve, reject) => {
       this.http.put(this.API_URL + '/projects/'+projectId+"/"+userId,devices,options)
         .subscribe((result: any) => {
@@ -56,5 +55,21 @@ export class DevicesProvider {
           reject(error.json());
         });
     });
-  }  
+  }
+
+  deleteDevice(id: string) {
+    return new Promise((resolve, reject) => {
+      let url = this.API_URL + 'users/' + id;
+ 
+      this.http.delete(url)
+        .subscribe((result: any) => {
+          resolve(result.json());
+        },
+        (error) => {
+          reject(error.json());
+        });
+    });
+  }
+
+
 }

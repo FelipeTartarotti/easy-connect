@@ -20,8 +20,7 @@ export class DevicePage {
   time_automation2;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-   
-    
+        
     this.title = navParams.get("title");
     this._id = navParams.get("_id");
 
