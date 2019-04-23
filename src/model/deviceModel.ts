@@ -7,4 +7,5 @@ export interface deviceModel {
     time_automation1: string;
     time_automation2 : string;
     devicePassword : string;
+    
 }

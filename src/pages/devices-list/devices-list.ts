@@ -2,6 +2,7 @@ import {Component } from '@angular/core';
 import {NavController,ToastController,LoadingController } from 'ionic-angular';
 import {deviceModel } from '../../model/deviceModel';
 import {DevicePage} from '../device/device';
+import {LoginPage} from '../login/login';
 import {AddDevicePage} from '../add-device/add-device';
 import uuidv4  from 'uuid/v1';
 import { DevicesProvider } from './../../providers/devices/devices';
@@ -25,6 +26,7 @@ export class DevicesListPage {
     public loadingCtrl: LoadingController) {
     this.userId = JSON.parse(localStorage.getItem('userId'));
     this.token = JSON.parse(localStorage.getItem('token'));
+    localStorage.removeItem("project");
     this.loadDevices();
   }
 
@@ -48,15 +50,25 @@ export class DevicesListPage {
     await this.devicesProvider.loadDevices(this.userId, this.token )
       .then((result: any) => {
 
-        this.devices = result.project.devices;
-
-        localStorage.setItem("projectId", JSON.stringify(this.devices[0].project));
+        console.log(result.project);
+        //localStorage.setItem("projectId", JSON.stringify(this.devices[0].project));
+        localStorage.setItem("projectId", JSON.stringify(result.project._id));
         localStorage.setItem("project", JSON.stringify(result.project));
-        
+        this.devices = result.project.devices;
         this.loader.dismiss();
       })
       .catch((error: any) => {
-        this.toast.create({ message: 'Erro ao carregar dispositivos. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
+        if(error.error == undefined){
+          console.log("nada encontrado");
+          
+        }
+
+        if(error.error == "Invalid Token"){
+          console.log("Token Inválido");
+          this.navCtrl.setRoot(LoginPage);
+        }
+
+       // this.toast.create({ message: 'Nenhum. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
         this.loader.dismiss();
       });
   }

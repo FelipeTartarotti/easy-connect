@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,ToastController,AlertController} from 'ionic-angular';
 import {DevicePage} from '../device/device';
 import { deviceModel } from '../../model/deviceModel';
 import {HomePage} from '../home/home';
 import { DevicesProvider } from './../../providers/devices/devices';
+import { applySourceSpanToStatementIfNeeded } from '@angular/compiler/src/output/output_ast';
+import { getOrCreateInjectable } from '@angular/core/src/render3/di';
 /**
  * Generated class for the AutomationConfigPage page.
  *
@@ -23,7 +25,7 @@ export class DeviceConfigPage {
   private loader;
   private project;
   public title;
-  public _id: deviceModel;
+  public _id: string;
   public name_automation1 : string;
   public name_automation2 : string;
   public time_automation1 : string;
@@ -32,13 +34,16 @@ export class DeviceConfigPage {
   private userId; 
   private token;
   private projectId;
+
+ 
  
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     private toast: ToastController,
-    private devicesProvider : DevicesProvider
+    private devicesProvider : DevicesProvider,
+    public alertCtrl: AlertController
     ) {
     this.title = navParams.get("title");
     this._id = navParams.get("_id");    
@@ -79,25 +84,86 @@ export class DeviceConfigPage {
     }
     
     localStorage.setItem("project", JSON.stringify(this.project));
-    this.upadateDevices();
+    this.updateDevices();
   }
-  presentLoading() {
+
+  presentLoading(text) {
     this.loader = this.loadingCtrl.create({
-      content: "Atualizando...",
+      content: text,
     });
     this.loader.present();
   }
-  async upadateDevices() {
-    this.presentLoading();
-    await this.devicesProvider.updateDevices(this.userId, this.token, this.projectId, this.project)
+
+  async updateDevices() {
+    this.presentLoading("Atualizando");
+    this.devicesProvider.updateDevices(this.userId, this.token, this.projectId, this.project)
       .then((result: any) => {
         console.log(result);
         this.loader.dismiss();
       })
       .catch((error: any) => {
-        this.toast.create({ message: 'Erro salvar dispositivos. Erro: ' + error.error, position: 'botton', duration: 3000 }).present();
+        this.toast.create({ message: 'Erro salvar dispositivos. Erro: ' + error.error, position: 'botton', duration: 5000 }).present();
         this.loader.dismiss();
       });
     this.navCtrl.setRoot(HomePage);
   }
+
+  deleteDevice(){
+    this.presentLoading("Excluindo dispositivo");
+    const deleteFromDeviceTable = new Promise((resolve, reject) => { 
+      this.devicesProvider.deleteDevice(this.userId,this._id, this.token)
+      .then((result: any) => {
+        resolve(result);
+      })
+      .catch((error: any) => {
+        reject(error);
+      });
+    });
+  
+    const deleteFromProjectTable = new Promise((resolve, reject) => {
+      this.devicesProvider.deleteDeviceFromProject(this.userId,this._id, this.token,this.projectId)
+      .then((result: any) => {
+        resolve(result);
+      })
+      .catch((error: any) => {
+        this.toast.create({ message: 'Erro ao excluir dispositivo. Erro: ' + error.error, position: 'botton', duration: 5000 }).present();
+        reject(error);
+      }); 
+    });
+
+    Promise.all([
+      deleteFromDeviceTable,
+      deleteFromProjectTable]).then(values => { 
+      this.loader.dismiss();
+      this.toast.create({ message: 'Dispositivo deletado com sucesso', position: 'botton', duration: 3000 }).present();
+      this.navCtrl.setRoot(HomePage);
+    }).catch(reason=>{
+      this.loader.dismiss();
+      this.toast.create({ message: 'Erro ao excluir dispositivo. Erro: ' + reason, position: 'botton', duration: 3000 }).present();
+    });  
+  }
+
+  showConfirm() {
+    const confirm = this.alertCtrl.create({
+      title: 'Exclusão de dispositivo',
+      message: 'Você realmente deseja excluir esse dispositivo?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: () => {
+            console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'Excluir',
+          handler: () => {
+            this.deleteDevice();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
 }
+
+

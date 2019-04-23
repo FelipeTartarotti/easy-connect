@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,LoadingController,ToastController } from 'ionic-angular';
 import uuidv4  from 'uuid/v1';
 import {HomePage} from '../home/home';
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import {deviceModel } from '../../model/deviceModel';
-
+import { DevicesProvider } from './../../providers/devices/devices';
 /**
  * Generated class for the AddDevicePage page.
  *
@@ -20,15 +20,29 @@ import {deviceModel } from '../../model/deviceModel';
 
 export class AddDevicePage {
 
-  cloudId;
-  device_name;
-  devices;
+  public cloudId;
+  public device_name;
+  public device_password;
+  private project;
+  private loader;
+  private userId;
+  private token;
+  private projectId;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private _barcodeScanner: BarcodeScanner) {
-    if(localStorage.getItem('devices'))
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams, 
+    private _barcodeScanner: BarcodeScanner,
+    public loadingCtrl: LoadingController,
+    private toast: ToastController,
+    private devicesProvider : DevicesProvider) {
+    if(localStorage.getItem('project'))
     {
-      this.devices = JSON.parse(localStorage.getItem('devices'));
+      this.project = JSON.parse(localStorage.getItem('project'));
     }
+    
+    this.userId = JSON.parse(localStorage.getItem('userId'));
+    this.token = JSON.parse(localStorage.getItem('token'));
+    this.projectId = JSON.parse(localStorage.getItem('projectId'));
   }
 
   ionViewDidLoad() {
@@ -36,22 +50,9 @@ export class AddDevicePage {
   }
 
   saveDevice(){
-
-    /*var deviceId = uuidv4();
-
-    if(!localStorage.getItem('devices'))
-    {
-      var firstDevice: deviceModel[] = [
-        {name: this.device_name, cloudId: this.cloudId, deviceId: deviceId, automation1_name: "Automação 1", automation2_name: "Automação 2", automation1_time: "5", automation2_time: "5" }
-      ];
-      localStorage.setItem("devices", JSON.stringify(firstDevice));
-    }
-    else
-    {
-      this.devices[this.devices.length] = {name: this.device_name, cloudId: this.cloudId, deviceId: deviceId, automation1_name: "Automação 1", automation2_name: "Automação 2", automation1_time: "5", automation2_time: "5" };
-      localStorage.setItem("devices", JSON.stringify(this.devices));
-    }
-     this.navCtrl.push(HomePage);*/
+    var newDevice = {title:this.device_name,cloudId:this.cloudId,name_automation1:"Automação 1",name_automation2:"Automação 2",time_automation1:"5",time_automation2:"5", devicePassword:this.device_password};
+    this.project.devices.push(newDevice);
+    this.updateDevices();
   }
 
   public scanQR() {
@@ -66,6 +67,27 @@ export class AddDevicePage {
     }, (err) => {
       console.log(err);
     });
+  }
+
+  presentLoading(text) {
+    this.loader = this.loadingCtrl.create({
+      content: text,
+    });
+    this.loader.present();
+  }
+
+  async updateDevices() {
+    this.presentLoading("Salvando...");
+    this.devicesProvider.updateDevices(this.userId, this.token, this.projectId, this.project)
+      .then((result: any) => {
+        console.log(result);
+        this.loader.dismiss();
+      })
+      .catch((error: any) => {
+        this.toast.create({ message: 'Erro salvar dispositivos. Erro: ' + error.error, position: 'botton', duration: 5000 }).present();
+        this.loader.dismiss();
+      });
+    this.navCtrl.setRoot(HomePage);
   }
 }
 
