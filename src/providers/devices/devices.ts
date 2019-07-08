@@ -99,5 +99,21 @@ export class DevicesProvider {
         });
     });
   }
+
+  create_project(id){
+    return new Promise((resolve, reject) => {
+      var data = {
+        "devices":[]
+      };
+      this.http.post(this.API_URL + '/create_project/'+id, data)
+        .subscribe((result: any) => {
+          resolve(result);
+        },
+        (error) => {
+          reject(error);
+      });
+    });
+  }
 }
+
 

@@ -33,4 +33,21 @@ export class UsersProvider {
         });
     });
   }
+
+  sing_up(name: string, email: string, password: string) {
+    return new Promise((resolve, reject) => {
+      var data = {
+        'name': name,
+        'email': email,
+        'password': password
+      };
+      this.http.post(this.API_URL + '/auth/register', data)
+        .subscribe((result: any) => {
+          resolve(result.json());
+        },
+        (error) => {
+          reject(error.json());
+      });
+    });
+  }
 }

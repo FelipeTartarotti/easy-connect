@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,LoadingController,ToastController } from 'ionic-angular';
+import { Component, } from '@angular/core';
+import { IonicPage, NavController, NavParams,LoadingController,ToastController,AlertController } from 'ionic-angular';
 import uuidv4  from 'uuid/v1';
 import {HomePage} from '../home/home';
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
@@ -20,9 +20,9 @@ import { DevicesProvider } from './../../providers/devices/devices';
 
 export class AddDevicePage {
 
-  public cloudId;
-  public device_name;
-  public device_password;
+  public cloudId = null;
+  public device_name = null;
+  public device_password = null;
   private project;
   private loader;
   private userId;
@@ -34,7 +34,9 @@ export class AddDevicePage {
     private _barcodeScanner: BarcodeScanner,
     public loadingCtrl: LoadingController,
     private toast: ToastController,
-    private devicesProvider : DevicesProvider) {
+    private devicesProvider : DevicesProvider,
+    public alertCtrl: AlertController) {
+  
     if(localStorage.getItem('project'))
     {
       this.project = JSON.parse(localStorage.getItem('project'));
@@ -50,22 +52,33 @@ export class AddDevicePage {
   }
 
   saveDevice(){
-    var newDevice = {title:this.device_name,cloudId:this.cloudId,name_automation1:"Automação 1",name_automation2:"Automação 2",time_automation1:"5",time_automation2:"5", devicePassword:this.device_password};
-    this.project.devices.push(newDevice);
-    this.updateDevices();
+    try{
+
+      if(!this.cloudId || !this.device_password  || !this.device_name ){
+        throw "Preencha todos os campos para salvar o dispositivo";
+      }
+    
+      if(this.project == null || this.project == false){
+        throw "Não foi posível localizar o projeto";
+      }
+
+      var newDevice = {title:this.device_name,cloudId:this.cloudId,name_automation1:"Automação 1",name_automation2:"Automação 2",time_automation1:"5",time_automation2:"5", devicePassword:this.device_password};
+      this.project.devices.push(newDevice);
+      this.updateDevices();
+
+    }catch(erro){
+      this.showAlert(erro);
+    }
   }
 
   public scanQR() {
     this._barcodeScanner.scan().then((barcodeData) => {
       if (barcodeData.cancelled) {
-        console.log("User cancelled the action!");
         return false;
       }
-      console.log("Scanned successfully!");
-      console.log(barcodeData);
       this.cloudId = barcodeData.text;
     }, (err) => {
-      console.log(err);
+      this.showAlert(err);
     });
   }
 
@@ -76,18 +89,26 @@ export class AddDevicePage {
     this.loader.present();
   }
 
-  async updateDevices() {
+  showAlert(text) {
+    const alert = this.alertCtrl.create({
+      title: 'Ops!',
+      subTitle: text,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  updateDevices() {
     this.presentLoading("Salvando...");
-    this.devicesProvider.updateDevices(this.userId, this.token, this.projectId, this.project)
+     this.devicesProvider.updateDevices(this.userId, this.token, this.projectId, this.project)
       .then((result: any) => {
-        console.log(result);
         this.loader.dismiss();
+        this.navCtrl.setRoot(HomePage);
       })
       .catch((error: any) => {
-        this.toast.create({ message: 'Erro salvar dispositivos. Erro: ' + error.error, position: 'botton', duration: 5000 }).present();
         this.loader.dismiss();
+        this.showAlert("Ops ocorreu algum erro ao salvar dispositivos - Erro: " + error.error);
       });
-    this.navCtrl.setRoot(HomePage);
   }
 }
 

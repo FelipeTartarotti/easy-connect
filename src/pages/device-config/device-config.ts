@@ -35,9 +35,6 @@ export class DeviceConfigPage {
   private token;
   private projectId;
 
- 
- 
-
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
@@ -52,6 +49,7 @@ export class DeviceConfigPage {
     this.token = JSON.parse(localStorage.getItem('token'));
     this.projectId = JSON.parse(localStorage.getItem('projectId'));
   }
+
 
   ionViewDidLoad() {
 

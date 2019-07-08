@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,App } from 'ionic-angular';
 import {LoginPage} from '../login/login';
 
 @Component({
@@ -8,22 +8,30 @@ import {LoginPage} from '../login/login';
 })
 export class ConfigPage {
 
-  phoneId : string;
+  userId : string;
+  private logado;
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,public appCtrl: App) {
+    this.userId = JSON.parse(localStorage.getItem('userId'));
+  }
 
-    this.phoneId = JSON.parse(localStorage.getItem('phoneId'));
+  ionViewWillEnter(){
+   
+    this.logado = JSON.parse(localStorage.getItem('logado'));
+    
+    if(this.logado!="yes"){ 
+      this.navCtrl.setRoot(LoginPage);
+    }
     
   }
 
   logout(){
     localStorage.removeItem("project");
-    localStorage.removeItem("logado");
+    localStorage.setItem("logado", JSON.stringify("no"));
     localStorage.removeItem("projectId");
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
 
-    this.navCtrl.setRoot(LoginPage);
-
+    this.appCtrl.getRootNav().setRoot(LoginPage);
   }
 }

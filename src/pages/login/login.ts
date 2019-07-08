@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,ToastController,LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams,ToastController,LoadingController,App} from 'ionic-angular';
 import { UsersProvider } from './../../providers/users/users';
-import {DevicesListPage} from '../devices-list/devices-list';
+import { SignUpPage } from '../sign-up/sign-up';
+import { TabsPage } from '../tabs/tabs';
+
 
 /**
  * Generated class for the LoginPage page.
@@ -24,7 +26,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: 
     NavParams,private userProvider: UsersProvider,private toast: ToastController,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,public appCtrl: App) {
  
   }
 
@@ -39,16 +41,15 @@ export class LoginPage {
     this.presentLoading();
     this.userProvider.login(this.email, this.password)
       .then((result: any) => {
-        console.log(result);
         this.toast.create({ message: 'Usuário logado com sucesso', duration: 3000 }).present();
-
         this.userId = result.user._id;
         localStorage.setItem("userId", JSON.stringify(this.userId));
         localStorage.setItem("token", JSON.stringify(result.token));
         localStorage.setItem("logado", JSON.stringify("yes"));
-
-        this.navCtrl.push(DevicesListPage);
         
+       // this.navCtrl.setRoot(TabsPage);
+        this.appCtrl.getRootNav().setRoot(TabsPage);
+        //this.navCtrl.setRoot(DevicesListPage);
         this.loader.dismiss();
         //this.navCtrl.pop();
         //this.navCtrl.setRoot()
@@ -60,7 +61,11 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+
+  }
+
+  redirect_to_signup(){
+    this.navCtrl.push(SignUpPage)
   }
 
 }

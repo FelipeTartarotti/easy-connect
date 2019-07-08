@@ -1,0 +1,43 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Registrar</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-content>
+      <ion-card-title></ion-card-title>
+        <ion-list>
+          <ion-item>
+              <ion-label floating>Nome</ion-label>
+              <ion-input [(ngModel)]="user.name" name="user.name" type="text" ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input [(ngModel)]="user.email" name="user.email" type="string" ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Confirme se e-mail</ion-label>
+            <ion-input [(ngModel)]="email_confirm" name="email_confirm" type="string" ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Senha</ion-label>
+            <ion-input [(ngModel)]="user.password" name="user.password"  type="password" ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label floating>Confirme senha</ion-label>
+            <ion-input [(ngModel)]="password_confirm" name="password_confirm" type="password" ></ion-input>
+          </ion-item>
+          
+        </ion-list>
+          
+        <div padding>
+          <button ion-button full (click)="sign_up()">Cadastrar</button>
+        </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
